@@ -1,0 +1,26 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Absar11/Journalyst_Backend#readme",
+  "bugs": {
+    "url": "https://github.com/Absar11/Journalyst_Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Absar11/Journalyst_Backend.git"
+  },
+  "license": "ISC",
+  "author": "Absar Ahmad",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
