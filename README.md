@@ -1,75 +1,46 @@
-# Journalyst Backend – Broker Integration
+# Journalyst Backend – Broker Integration Layer (One-Way Sync)
 
-## Overview
-Backend module for syncing trades from third-party brokers (e.g., Zerodha).  
-Built with **Node.js + Express (JavaScript)**, modular & scalable.  
+This project implements a simplified **Broker Integration Layer** for syncing trades from external brokers into Journalyst.
 
 ---
 
-## Project Structure
-
-src/
-├── index.js # Server entrypoint
-├── routes/
-│ └── syncRoutes.js # API routes
-├── services/
-│ ├── syncService.js # Sync logic + normalization flow
-│ └── tokenManager.js # Token handling & refresh
-├── adapters/
-│ └── zerodhaAdapter.js # Broker adapter
-└── utils/
-└── normalizer.js # Trade normalization
-
+## Design Decisions
+- **Broker Adapter Pattern**: Created a reusable interface (`adapters/`) so each broker (Zerodha, Alpaca, etc.) can have its own adapter.  
+- **Normalization Layer**: Since brokers return trades in different formats, a normalizer ensures consistent trade objects (`symbol, quantity, price, timestamp`).  
+- **Token Management**:  
+  - Tokens stored in-memory for each user.  
+  - Expiry + refresh flow simulated.  
+- **Sync Service**: Handles fetching token → refreshing if expired → fetching trades → normalizing → returning results.  
+- **Clean Architecture**: Code separated into `adapters`, `services`, and `utils` for scalability.
 
 ---
 
-## Installation & Run
+## How to Add a New Broker
+1. Create a new adapter file inside `src/adapters/` (e.g., `alpacaAdapter.js`).  
+   Example:
+   ```js
+   class AlpacaAdapter {
+     async fetchTrades(token) {
+       // Fetch trades from Alpaca API
+       return [
+         { symbol: "AAPL", qty: 2, price: 170, timestamp: Date.now() }
+       ];
+     }
+   }
+   module.exports = AlpacaAdapter;
 
-```bash
-cd src
-npm install
-npm run dev
-Server runs at: http://localhost:4000
+2. Register the broker inside syncService.js:/
+   const adapters = {
+     zerodha: new ZerodhaAdapter(),
+    alpaca: new AlpacaAdapter()
+  };
 
----
+3. Call the sync endpoint:
+   GET /api/sync/:userId/:brokerName
 
-## API Endpoint
-
-GET /api/sync/:userId/:broker
-
-Parameter	Description
-userId	Unique identifier of user
-broker	Broker name (e.g., zerodha)
-
-# Example
-GET http://localhost:4000/api/sync/123/zerodha
-
-# Response
-{
-  "success": true,
-  "trades": [
-    { "symbol": "TCS", "quantity": 2, "price": 3500, "timestamp": "2025-10-01T10:00:00Z" },
-    { "symbol": "INFY", "quantity": 5, "price": 1500, "timestamp": "2025-10-01T11:00:00Z" }
-  ]
-}
-
---- 
-
-##  Adding a New Broker
-
-Create a new adapter in adapters/.
-
-Add normalization function in utils/normalizer.js.
-
-Update broker check in services/syncService.js.
-
---- 
-
-## Notes
-
-Token refresh simulated (5 min expiry).
-
-In-memory token storage (replace with DB/Redis in production).
-
-Clean & modular code for scalability and easy extension.
+##  Assumptions / Simplifications
+  - **In-Memory Token Storage:** No database/Redis used — tokens vanish after server restart.
+  - **Token Refresh:** Currently mocked with setTimeout; real-world needs mutex/locking to avoid multiple refreshes at once.
+  - **Trades:** Mock data used; real integration would require API keys + actual broker APIs.
+  - **Implemented Broker:** Only Zerodha adapter is implemented for demonstration.
 
