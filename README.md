@@ -44,6 +44,6 @@ This project implements a simplified **Broker Integration Layer** for syncing tr
   - **Trades:** Mock data used; real integration would require API keys + actual broker APIs.
   - **Implemented Broker:** Only Zerodha adapter is implemented for demonstration.
 
-## ER-Diagram
+## Architecture-Diagram
 ![Architecture diagram](ER-diagram.png)
 
