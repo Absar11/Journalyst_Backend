@@ -47,3 +47,5 @@ This project implements a simplified **Broker Integration Layer** for syncing tr
 ## ER-Diagram
 ![Architecture diagram](ER-diagram.png)
 
+![Broker Sync Architecture](ER-diagram.png)
+

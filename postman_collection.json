@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "Journalyst Broker Sync API",
+    "_postman_id": "d3f9a8d5-1f8c-4f5b-bc93-abc123xyz789",
+    "description": "Postman collection for testing Journalyst Broker Integration Layer (One-Way Sync).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Sync Trades (Zerodha)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/sync/123/zerodha",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "sync", "123", "zerodha"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sync Trades (Alpaca - Example)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/sync/456/alpaca",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "sync", "456", "alpaca"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
